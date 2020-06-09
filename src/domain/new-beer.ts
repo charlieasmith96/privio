@@ -1,4 +1,4 @@
-export interface NewBeer {
+export interface NewUser {
     name: string;
     brewery: string;
     type: 'lager' | 'ale' | 'wheat'; // there are more, of course ;-)

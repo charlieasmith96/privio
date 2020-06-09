@@ -1,2 +1,2 @@
 export const BEER_REPO = 'BeerRepo';
-export const BEER_SERVICE = 'BeerService';
+export const USER_SERVICE = 'UserService';

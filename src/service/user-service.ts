@@ -1,19 +1,19 @@
 import { Service, Inject } from 'typedi';
-import { NewBeer } from '../domain/new-beer';
+import { NewUser } from '../domain/new-beer';
 import { BeerDto } from '../domain/beer-dto';
 import { BeerRepository } from '../persistence/beer-repository';
 import { Beer } from '../domain/beer';
 import { BeerUpdate } from '../domain/beer-update';
-import { BEER_SERVICE, BEER_REPO } from '../config/services';
+import { USER_SERVICE, BEER_REPO } from '../config/services';
 
-@Service(BEER_SERVICE)
-export class BeerService {
+@Service(USER_SERVICE)
+export class UserService {
 
     constructor(
         @Inject(BEER_REPO) private readonly beerRepo: BeerRepository,
     ) { }
 
-    async addNewBeer(newBeer: NewBeer): Promise<BeerDto> {
+    async addNewUser(newBeer: NewUser): Promise<BeerDto> {
         const addedBeer = await this.beerRepo.insertOne({ ...newBeer, t_added: new Date() });
         return beerDto(addedBeer);
     }
