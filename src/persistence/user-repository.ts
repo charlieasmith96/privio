@@ -11,6 +11,6 @@ export class UserRepository {
     }
     
     async retrieveById(id: string) : Promise<any> {
-        return DbFactory.getDb().User.findById(id);
+        return DbFactory.getDb().User.findByPk(id);
     }
 }

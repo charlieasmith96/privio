@@ -78,7 +78,7 @@ describe('/user tests', async () => {
         done()
     })
     }),
-    it.only('should return 404 if user does not exist/not found', (done) => {
+    it('should return 404 if user does not exist/not found', (done) => {
         request
         .get('/user/2')
         .set('Accept', 'application/json')
