@@ -23,6 +23,16 @@ export class UserService {
         }
     }
 
+    async retrieveUserById(id: string) : Promise<UserDto> {
+        try {
+            const retrievedUser = await this.userRepository.retrieveById(id);
+            return this.convertNewUserEntityToNewUserDto(retrievedUser);
+        } catch(err) {
+            throw UserAlreadyExistsException(err.original.code);
+        }
+    }
+
+
     convertNewUserToNewUserEntity(newUser: NewUser) : UserEntity {
         const { firstName, lastName, emailAddress, phoneNumber} = newUser;
         return { FIRST_NAME: firstName, LAST_NAME: lastName, EMAIL_ADDRESS: emailAddress,

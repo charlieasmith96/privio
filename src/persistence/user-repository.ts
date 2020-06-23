@@ -9,12 +9,8 @@ export class UserRepository {
     async insertOne(userEntity: UserEntity): Promise<any> {
         return DbFactory.getDb().User.create(userEntity)
     }
-
-    async retrieveOne(id: number) : Promise<any> {
-        const retrievalSql = 'SELECT * FROM USER WHERE ID = ?'
-     }
-
-    generateCurrentDateTimeForMySql() : string {
-        return new Date().toISOString().slice(0, 19).replace('T', ' ');
+    
+    async retrieveById(id: string) : Promise<any> {
+        return DbFactory.getDb().User.findById(id);
     }
 }

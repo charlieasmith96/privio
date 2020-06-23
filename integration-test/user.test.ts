@@ -58,7 +58,32 @@ describe('/user tests', async () => {
        .set('Accept', 'application/json')
        .expect('Content-Type', /json/)
        .expect(400, done);
-   })
+   }),
+   it('should retrieve a user', (done) => {
+       request
+       .post('/user')
+       .send(userA)
+       .set('Accept', 'application/json')
+       .expect(200)
+       .then(() => {
+           return request
+           .get('/user/1')
+           .set('Accept', 'application/json')
+           .expect(200)
+       }).then((res) => {
+        expect(res.body.firstName).to.eq('charlie')
+        expect(res.body.lastName).to.eq('smith')
+        expect(res.body.emailAddress).to.eq('test@gmail.com')
+        expect(res.body.phoneNumber).to.eq('01423873433') 
+        done()
+    })
+    }),
+    it.only('should return 404 if user does not exist/not found', (done) => {
+        request
+        .get('/user/2')
+        .set('Accept', 'application/json')
+        .expect(404, done)
+    })   
 
     afterEach(async () => {
         DbFactory.getDb().User.destroy({ truncate: true })
