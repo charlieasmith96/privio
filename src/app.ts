@@ -2,11 +2,11 @@ import 'reflect-metadata';
 import * as http from 'http';
 import { Container } from 'typedi';
 import { createExpressServer, useContainer } from 'routing-controllers';
-import { SERVER_PORT } from './config/config';
-import { DbFactory } from './persistence/db-factory';
-import { BeerRepository } from './persistence/beer-repository';
+import { SERVER_PORT, sequelizeConfig } from './config/config';
+import { UserRepository } from './persistence/user-repository';
 import { UserService } from './service/user-service';
 import { UserController } from './web/user-controller';
+import { DbFactory } from './persistence/db-factory';
 
 useContainer(Container);
 
@@ -16,18 +16,18 @@ export class App {
 
     constructor() {
         Container.import([
-            BeerRepository,
+            UserRepository,
             UserService,
         ]);
     }
 
     async start(): Promise<http.Server> {
-        await DbFactory.init();
+        DbFactory.createModels(sequelizeConfig);
         return this.startHttpServer();
     }
 
     private startHttpServer(): Promise<http.Server> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.httpServer = createExpressServer({
                 controllers: [
                     UserController,

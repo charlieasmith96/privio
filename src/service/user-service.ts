@@ -1,46 +1,36 @@
 import { Service, Inject } from 'typedi';
-import { NewUser } from '../domain/new-beer';
-import { BeerDto } from '../domain/beer-dto';
-import { BeerRepository } from '../persistence/beer-repository';
-import { Beer } from '../domain/beer';
-import { BeerUpdate } from '../domain/beer-update';
-import { USER_SERVICE, BEER_REPO } from '../config/services';
+import { NewUser } from '../domain/new-user';
+import { UserDto } from '../domain/user-dto';
+import { UserRepository } from '../persistence/user-repository';
+import { USER_SERVICE, USER_REPOSITORY } from '../config/services';
+import { UserAlreadyExistsException } from './exceptions/UserAlreadyExistsException';
+import { UserEntity } from '../domain/user-model';
 
 @Service(USER_SERVICE)
 export class UserService {
 
-    constructor(
-        @Inject(BEER_REPO) private readonly beerRepo: BeerRepository,
-    ) { }
+    constructor(@Inject(USER_REPOSITORY) private readonly userRepository: UserRepository) { }
 
-    async addNewUser(newBeer: NewUser): Promise<BeerDto> {
-        const addedBeer = await this.beerRepo.insertOne({ ...newBeer, t_added: new Date() });
-        return beerDto(addedBeer);
+    async addNewUser(newUser: NewUser) : Promise<UserDto> {
+        const newUserEntity = this.convertNewUserToNewUserEntity(newUser);
+        try {
+            const createdUser = await this.userRepository.insertOne(newUserEntity)
+            console.log(`Successfully inserted user ${JSON.stringify(createdUser)}`)
+            return this.convertNewUserEntityToNewUserDto(createdUser)
+        } catch(err) {
+            if (err.original.code === 'ER_DUP_ENTRY') throw UserAlreadyExistsException(err.original.code); 
+            throw new Error(err.code)
+        }
     }
 
-    async findOneById(id: string): Promise<BeerDto | null> {
-        const beer = await this.beerRepo.findOneById(id);
-        return beer ? beerDto(beer) : null;
+    convertNewUserToNewUserEntity(newUser: NewUser) : UserEntity {
+        const { firstName, lastName, emailAddress, phoneNumber} = newUser;
+        return { FIRST_NAME: firstName, LAST_NAME: lastName, EMAIL_ADDRESS: emailAddress,
+             PHONE_NUMBER: phoneNumber};
     }
 
-    async findAll(): Promise<BeerDto[]> {
-        return (await this.beerRepo.findAll()).map(beerDto);
+    convertNewUserEntityToNewUserDto(newUserEntity: UserEntity): UserDto {
+        const { FIRST_NAME, LAST_NAME, EMAIL_ADDRESS, PHONE_NUMBER } = newUserEntity; // destruct user object
+        return { firstName: FIRST_NAME, lastName: LAST_NAME, emailAddress: EMAIL_ADDRESS, phoneNumber: PHONE_NUMBER}; // construct dto
     }
-
-    async findStrongBeers(): Promise<BeerDto[]> {
-        const allBeers = await this.beerRepo.findAll();
-        return allBeers.filter(beer => beer.volPerc > 5.5).map(beerDto);
-    }
-
-    async updateBeer(beerUpdate: BeerUpdate, beerId: string): Promise<BeerDto | null> {
-        await this.beerRepo.updateOne(beerUpdate, beerId);
-        const updated = await this.beerRepo.findOneById(beerId);
-        return updated ? beerDto(updated) : null;
-    }
-
-}
-
-function beerDto(beer: Beer): BeerDto {
-    const { _id, ...rest } = beer; // destruct beer object
-    return { ...rest, id: _id?.toHexString() }; // construct dto
 }

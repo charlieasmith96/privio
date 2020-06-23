@@ -14,7 +14,7 @@
     "exclude": [
       "node_modules",
       "build",
-      "test"
+      "integration-test"
     ]
   }
   

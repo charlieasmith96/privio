@@ -1,29 +1,29 @@
-import { Db, MongoClient, MongoClientOptions } from 'mongodb';
-import { DB_CONN_URL, DB_NAME } from '../config/config';
-
-const mongoClientOptions: MongoClientOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-};
+import Sequelize from "sequelize";
+import { DbInterface } from "../typings/DbInterface";
+import { UserFactory } from "../domain/user-model";
 
 export class DbFactory {
 
-    private static db: Db;
+    private static db : DbInterface;
+     
+    public static createModels = (sequelizeConfig: any) => {
+        const { database, username, password, host, dialect } = sequelizeConfig;
+        const sequelize = new Sequelize(database, username, password, {
+            host: host,
+            dialect: dialect
+          })
+    
+        const db: DbInterface = {
+            sequelize,
+            Sequelize,
+            User: UserFactory(sequelize, Sequelize)
+        };
+        
+        DbFactory.db = db;
+    }
 
-    static get database(): Db {
-        if (!DbFactory.db) {
-            throw new Error('database connection has not been initialized');
-        }
+    public static getDb() {
         return DbFactory.db;
     }
-
-    static async init() {
-        await DbFactory.establishConnection();
-    }
-
-    private static async establishConnection() {
-        const client = await MongoClient.connect(DB_CONN_URL, mongoClientOptions);
-        DbFactory.db = client.db(DB_NAME);
-    }
-
 }
+
