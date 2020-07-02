@@ -1,6 +1,7 @@
 import Sequelize from "sequelize";
 import { DbInterface } from "../typings/DbInterface";
 import { UserFactory } from "../domain/user-model";
+import { TokenFactory } from "../domain/token-model";
 
 export class DbFactory {
 
@@ -16,7 +17,8 @@ export class DbFactory {
         const db: DbInterface = {
             sequelize,
             Sequelize,
-            User: UserFactory(sequelize, Sequelize)
+            User: UserFactory(sequelize, Sequelize),
+            Token: TokenFactory(sequelize, Sequelize)
         };
         
         DbFactory.db = db;

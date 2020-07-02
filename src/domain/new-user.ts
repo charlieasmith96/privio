@@ -3,4 +3,5 @@ export interface NewUser {
     lastName: string;
     emailAddress: string;
     phoneNumber: string;
+    password: string;
 }

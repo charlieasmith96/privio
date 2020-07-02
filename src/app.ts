@@ -7,6 +7,8 @@ import { UserRepository } from './persistence/user-repository';
 import { UserService } from './service/user-service';
 import { UserController } from './web/user-controller';
 import { DbFactory } from './persistence/db-factory';
+import { AuthenticationService } from './service/authentication-service';
+import { UserFacade } from './web/user-facade';
 
 useContainer(Container);
 
@@ -18,6 +20,8 @@ export class App {
         Container.import([
             UserRepository,
             UserService,
+            AuthenticationService,
+            UserFacade
         ]);
     }
 

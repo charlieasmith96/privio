@@ -13,4 +13,9 @@ export class UserRepository {
     async retrieveById(id: string) : Promise<any> {
         return DbFactory.getDb().User.findByPk(id);
     }
+
+    async retrieveByEmailAddress(emailAddress: string) : Promise<any> {
+        return DbFactory.getDb().User
+        .findOne({ where: {EMAIL_ADDRESS: emailAddress} });
+    }
 }

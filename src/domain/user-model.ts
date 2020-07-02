@@ -8,6 +8,7 @@ export interface UserAttributes {
     LAST_NAME: string;
     EMAIL_ADDRESS: string;
     PHONE_NUMBER: string;
+    HASHED_PASSWORD: string;
     CREATE_DATE?: string;
     UPDATE_DATE?: string;
 }
@@ -28,6 +29,9 @@ export const UserFactory = (sequelize: Sequelize.Sequelize, DataTypes: Sequelize
             type: DataTypes.STRING
         }, 
         PHONE_NUMBER: { 
+            type: DataTypes.STRING
+        },
+        HASHED_PASSWORD: {
             type: DataTypes.STRING
         }
     };

@@ -1,6 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import bodyParser from 'body-parser';
+import { UserAuthentication } from './domain/user-authentication';
 // tslint:disable-next-line:no-var-requires
 require('dotenv').config();
 
@@ -50,12 +51,12 @@ app.delete('/logout', (req, res) => {
     res.sendStatus(204)
 })
 
-function generateAccessToken(user : User) {
+function generateAccessToken(user : UserAuthentication) {
     // @ts-ignore
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s'})
 }
 
-function generateRefreshToken(user : User) {
+function generateRefreshToken(user : UserAuthentication) {
     // @ts-ignore
     return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
 }

@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "@types/bcrypt": "^3.0.0",
     "@types/dotenv": "^8.2.0",
     "@types/express-session": "^1.17.0",
     "@types/hapi__joi": "^17.1.2",
@@ -25,6 +26,7 @@
     "@types/passport-auth0": "^1.0.4",
     "@types/sequelize": "^4.27.2",
     "@types/superagent": "^4.1.7",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.0",

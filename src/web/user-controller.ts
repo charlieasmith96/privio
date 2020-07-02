@@ -1,33 +1,56 @@
-import { JsonController, Post, Body, Patch, Param, OnUndefined, Get, QueryParam, BadRequestError, NotFoundError } from 'routing-controllers';
+import { JsonController, Post, Body, Patch, Param, OnUndefined, Get, QueryParam, BadRequestError, NotFoundError, InternalServerError } from 'routing-controllers';
 import { NewUser } from '../domain/new-user';
-import { UserService } from '../service/user-service';
 import { Inject } from 'typedi';
-import { USER_SERVICE } from '../config/services';
+import { USER_FACADE } from '../config/services';
 import { userSchema } from './schemas/user-schema';
+import { UserDto } from '../domain/user-dto';
+import { UserFacade } from './user-facade';
 
 @JsonController('/user')
 export class UserController {
 
-    constructor(@Inject(USER_SERVICE) private readonly userService: UserService) { }
+    constructor(@Inject(USER_FACADE) private readonly userFacade: UserFacade) { }
 
     @Post()
-    async addNewUser(@Body() newUser: NewUser) {
+    async addNewUser(@Body() newUser: NewUser) : Promise<UserDto> {
         if (userSchema.validate(newUser).error) {
-            throw new BadRequestError("Invalid Request")
+            throw new BadRequestError("Invalid request")
         }
         try {
-            return await this.userService.addNewUser(newUser)
+            console.log('im here!')
+            return await this.userFacade.addNewUser(newUser)
         } catch(err) {
-            throw new BadRequestError("User already exists")
+            if (err.message === 'ER_DUP_ENTRY') throw new BadRequestError("User already exists")
+            throw new InternalServerError('Something went wrong')
         }
     }
 
     @Get('/:userId')
-    async retrieveUserById(@Param('userId') userId: string) {
+    async retrieveUserById(@Param('userId') userId: string) : Promise<UserDto>{
         try {
-            return await this.userService.retrieveUserById(userId);
+            return await this.userFacade.retrieveUserById(userId);
         } catch(err) {
             throw new NotFoundError("User could not be found")
         }
+    }
+
+    @Post('/login')
+    async login(@Body() authenticationBody: any) {
+        // hash password and check against salted password in DB
+        // generate tokens in authentication service
+        // return tokens to user
+    }
+
+    @Post('/logout')
+    async logout() {
+        // delete refresh token for given user
+        // redirect on front end (somehow?!)
+    }
+
+    @Post('/token')
+    async requestNewToken() {
+        // check if refresh token is valid in the db
+        // generate new access token if so
+        // logout if not
     }
 }
