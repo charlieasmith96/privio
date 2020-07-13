@@ -6,6 +6,7 @@ import { USER_SERVICE, USER_REPOSITORY } from '../config/services';
 import { UserAlreadyExistsException } from './exceptions/UserAlreadyExistsException';
 import { UserEntity } from '../domain/user-model';
 import { UserDoesNotExistException } from './exceptions/UserDoesNotExistException';
+import { ErrorCodes } from '../web/error-code-enums';
 
 @Service(USER_SERVICE)
 export class UserService {
@@ -20,7 +21,7 @@ export class UserService {
             console.log(`Successfully inserted user ${JSON.stringify(createdUser)}`)
             return this.convertNewUserEntityToNewUserDto(createdUser)
         } catch(err) {
-            if (err.original.code === 'ER_DUP_ENTRY') throw UserAlreadyExistsException(err.original.code);
+            if (err.original.code === ErrorCodes.ER_DUP_ENTRY) throw UserAlreadyExistsException(err.original.code);
             throw new Error(err.code)
         }
     }
@@ -30,7 +31,7 @@ export class UserService {
             const retrievedUser = await this.userRepository.retrieveByEmailAddress(emailAddress);
             return this.convertNewUserEntityToNewUserDto(retrievedUser);
         } catch(err) {
-            if (err.original && err.original.code === 'ER_NO_USER_FOUND') throw UserDoesNotExistException(err.original.code);
+            if (err.original && err.original.code === ErrorCodes.ER_NO_USER_FOUND) throw UserDoesNotExistException(err.original.code);
             throw new Error(err.code)
         }
     }
@@ -41,7 +42,7 @@ export class UserService {
             return this.convertNewUserEntityToNewUserDto(retrievedUser);
         } catch(err) {
             console.log(err)
-            if (err.original  && err.original.code === 'ER_NO_USER_FOUND') throw UserDoesNotExistException(err.original.code);
+            if (err.original  && err.original.code === ErrorCodes.ER_NO_USER_FOUND) throw UserDoesNotExistException(err.original.code);
             throw new Error(err.code)
         }
     }

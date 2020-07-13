@@ -3,6 +3,7 @@ import { UserRepository } from '../../persistence/user-repository';
 import { NewUser } from '../../domain/new-user';
 import { UserDto } from '../../domain/user-dto';
 import { UserEntity } from '../../domain/user-model';
+import { ErrorCodes } from '../../web/error-code-enums';
 jest.mock('../../persistence/user-repository')
 
 let userService: UserService;
@@ -52,7 +53,7 @@ describe('addNewUser', () => {
         const err = {
             message: 'This is an error',
             original: {
-                code: 'ER_DUP_ENTRY'
+                code: ErrorCodes.ER_DUP_ENTRY
             }
         }
 
@@ -73,7 +74,7 @@ describe('addNewUser', () => {
         try {
             await userService.addNewUser(user)
         } catch(e) {
-            expect(e.message).toEqual('ER_DUP_ENTRY');
+            expect(e.message).toEqual(ErrorCodes.ER_DUP_ENTRY);
         }
     })
 })
@@ -117,7 +118,7 @@ describe('retrieveUserByEmailAddress', () => {
         const err = {
             message: 'This is an error',
             original: {
-                code: 'ER_NO_USER_FOUND'
+                code: ErrorCodes.ER_NO_USER_FOUND
             }
         }
 
@@ -130,7 +131,7 @@ describe('retrieveUserByEmailAddress', () => {
         try {
             await userService.retrieveUserByEmailAddress(emailAddress)
         } catch(e) {
-            expect(e.message).toEqual('ER_NO_USER_FOUND');
+            expect(e.message).toEqual(ErrorCodes.ER_NO_USER_FOUND);
         }
     })
 })
@@ -173,7 +174,7 @@ describe('retrieveUserById', () => {
         const err = {
             message: 'This is an error',
             original: {
-                code: 'ER_NO_USER_FOUND'
+                code: ErrorCodes.ER_NO_USER_FOUND
             }
         }
 
@@ -186,7 +187,7 @@ describe('retrieveUserById', () => {
         try {
             await userService.retrieveUserById(userId)
         } catch(e) {
-            expect(e.message).toEqual('ER_NO_USER_FOUND');
+            expect(e.message).toEqual(ErrorCodes.ER_NO_USER_FOUND);
         }
     })
 })
