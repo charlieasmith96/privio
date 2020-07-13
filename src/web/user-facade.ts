@@ -1,10 +1,10 @@
-import { Service, Inject } from "typedi";
-import { USER_FACADE, USER_SERVICE, AUTHENTICATION_SERVICE } from "../config/services";
-import { NewUser } from "../domain/new-user";
-import { UserDto } from "../domain/user-dto";
-import { UserService } from "../service/user-service";
-import { AuthenticationService } from "../service/authentication-service";
-import { UserAuthentication } from "../domain/user-authentication";
+import { Service, Inject } from 'typedi';
+import { USER_FACADE, USER_SERVICE, AUTHENTICATION_SERVICE } from '../config/services';
+import { NewUser } from '../domain/new-user';
+import { UserDto } from '../domain/user-dto';
+import { UserService } from '../service/user-service';
+import { AuthenticationService } from '../service/authentication-service';
+import { UserAuthentication } from '../domain/user-authentication';
 
 @Service(USER_FACADE)
 export class UserFacade {

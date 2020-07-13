@@ -20,7 +20,7 @@ export class UserService {
             console.log(`Successfully inserted user ${JSON.stringify(createdUser)}`)
             return this.convertNewUserEntityToNewUserDto(createdUser)
         } catch(err) {
-            if (err.original.code === 'ER_DUP_ENTRY') throw UserAlreadyExistsException(err.original.code); 
+            if (err.original.code === 'ER_DUP_ENTRY') throw UserAlreadyExistsException(err.original.code);
             throw new Error(err.code)
         }
     }
@@ -42,14 +42,14 @@ export class UserService {
         } catch(err) {
             console.log(err)
             if (err.original  && err.original.code === 'ER_NO_USER_FOUND') throw UserDoesNotExistException(err.original.code);
-            throw new Error(err.code)        
+            throw new Error(err.code)
         }
     }
 
 
     convertNewUserToNewUserEntity(newUser: NewUser | null) : UserEntity {
         if (!newUser) throw Error('Invalid argument for converter')
-        
+
         const { firstName, lastName, emailAddress, phoneNumber, password} = newUser;
         return { FIRST_NAME: firstName, LAST_NAME: lastName, EMAIL_ADDRESS: emailAddress,
              PHONE_NUMBER: phoneNumber, HASHED_PASSWORD: password};

@@ -9,7 +9,7 @@ export class UserRepository {
     async insertOne(userEntity: UserEntity): Promise<UserEntity> {
         return DbFactory.getDb().User.create(userEntity)
     }
-    
+
     async retrieveById(id: number) : Promise<UserEntity | null> {
         return DbFactory.getDb().User.findByPk(id);
     }

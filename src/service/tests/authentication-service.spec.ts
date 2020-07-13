@@ -16,7 +16,7 @@ describe('My test suite', () => {
     })
 
     it('should do something', async () => {
-        let stub = sinon.stub(bcrypt, 'compare');
+        const stub = sinon.stub(bcrypt, 'compare');
         stub.withArgs('dog', 'x1p3!ol_ope11').resolves(true)
         expect(await authenticationService.checkPasswordWithHash('dog', 'x1p3!ol_ope11')).to.eq(true);
     })

@@ -23,7 +23,7 @@ app.post('/token', (req, res) => {
     if (!refreshTokens.includes(refreshToken)) return res.sendStatus(403)
 
     // @ts-ignore
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user : User) => {
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user : UserAuthentication) => {
         if (err) return res.sendStatus(403)
         const accessToken = generateAccessToken(user);
         res.json({ accessToken })
@@ -32,10 +32,10 @@ app.post('/token', (req, res) => {
 
 app.post('/login', (req, res) => {
 
-    const username = req.body.username;
+    const emailAddress = req.body.username;
     const password = req.body.password;
 
-    const user = { username, password };
+    const user = { emailAddress, password };
 
     // @ts-ignore
     const accessToken = generateAccessToken(user);

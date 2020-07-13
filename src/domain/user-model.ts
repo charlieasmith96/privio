@@ -22,13 +22,13 @@ export const UserFactory = (sequelize: Sequelize.Sequelize, DataTypes: Sequelize
         FIRST_NAME: {
             type: DataTypes.STRING
         },
-        LAST_NAME: { 
+        LAST_NAME: {
             type: DataTypes.STRING
         },
-        EMAIL_ADDRESS: { 
+        EMAIL_ADDRESS: {
             type: DataTypes.STRING
-        }, 
-        PHONE_NUMBER: { 
+        },
+        PHONE_NUMBER: {
             type: DataTypes.STRING
         },
         HASHED_PASSWORD: {

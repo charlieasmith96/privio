@@ -14,13 +14,13 @@ export class UserController {
     @Post()
     async addNewUser(@Body() newUser: NewUser) : Promise<UserDto> {
         if (userSchema.validate(newUser).error) {
-            throw new BadRequestError("Invalid request")
+            throw new BadRequestError('Invalid request')
         }
         try {
             console.log('im here!')
             return await this.userFacade.addNewUser(newUser)
         } catch(err) {
-            if (err.message === 'ER_DUP_ENTRY') throw new BadRequestError("User already exists")
+            if (err.message === 'ER_DUP_ENTRY') throw new BadRequestError('User already exists')
             throw new InternalServerError('Something went wrong')
         }
     }
@@ -30,7 +30,7 @@ export class UserController {
         try {
             return await this.userFacade.retrieveUserById(userId);
         } catch(err) {
-            throw new NotFoundError("User could not be found")
+            throw new NotFoundError('User could not be found')
         }
     }
 

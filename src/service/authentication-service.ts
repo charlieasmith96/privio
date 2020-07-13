@@ -1,7 +1,7 @@
-import { Service, Inject } from "typedi";
-import { AUTHENTICATION_SERVICE, USER_REPOSITORY } from "../config/services";
+import { Service, Inject } from 'typedi';
+import { AUTHENTICATION_SERVICE, USER_REPOSITORY } from '../config/services';
 import bcrypt from 'bcrypt';
-import { AuthenticationRepository } from "../persistence/authentication-repository";
+import { AuthenticationRepository } from '../persistence/authentication-repository';
 
 @Service(AUTHENTICATION_SERVICE)
 export class AuthenticationService {
@@ -31,12 +31,12 @@ export class AuthenticationService {
         // @ts-ignore
         return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s'})
     }
-    
+
     generateAndSaveRefreshToken(user : any) {
         // @ts-ignore
         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
-        
+
 
     }
-    
+
 }

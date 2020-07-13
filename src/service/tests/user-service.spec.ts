@@ -1,8 +1,8 @@
-import { UserService } from "../user-service";
-import { UserRepository } from "../../persistence/user-repository";
-import { NewUser } from "../../domain/new-user";
-import { UserDto } from "../../domain/user-dto";
-import { UserEntity } from "../../domain/user-model";
+import { UserService } from '../user-service';
+import { UserRepository } from '../../persistence/user-repository';
+import { NewUser } from '../../domain/new-user';
+import { UserDto } from '../../domain/user-dto';
+import { UserEntity } from '../../domain/user-model';
 jest.mock('../../persistence/user-repository')
 
 let userService: UserService;
@@ -11,15 +11,15 @@ let userRepositoryMock: UserRepository;
 describe('addNewUser', () => {
     it('should return expected user dto given user', async () => {
         // given
-        let userEntity: UserEntity = {
+        const userEntity: UserEntity = {
             FIRST_NAME: 'charlie',
             LAST_NAME: 'smith',
             EMAIL_ADDRESS: 'charlieasmith96',
             PHONE_NUMBER: '07709382913',
             HASHED_PASSWORD: '1!p',
         }
-        
-        let user : NewUser = {
+
+        const user : NewUser = {
             firstName: 'charlie',
             lastName: 'smith',
             emailAddress: 'charlieasmith96',
@@ -32,7 +32,7 @@ describe('addNewUser', () => {
         userRepositoryMock = new UserRepository();
         userService = new UserService(userRepositoryMock)
 
-        let expectedResult : UserDto = {
+        const expectedResult : UserDto = {
             firstName: 'charlie',
             lastName: 'smith',
             emailAddress: 'charlieasmith96',
@@ -41,7 +41,7 @@ describe('addNewUser', () => {
         };
 
        // when
-        let result = await userService.addNewUser(user);
+        const result = await userService.addNewUser(user);
 
         // then
         expect(result).toEqual(expectedResult);
@@ -49,14 +49,14 @@ describe('addNewUser', () => {
 
     it('should throw error with ER_DUP_ENTRY when error code is ER_DUP_ENTRY', async () => {
         // given
-        let err = {
+        const err = {
             message: 'This is an error',
             original: {
                 code: 'ER_DUP_ENTRY'
             }
         }
-        
-        let user : NewUser = {
+
+        const user : NewUser = {
             firstName: 'charlie',
             lastName: 'smith',
             emailAddress: 'charlieasmith96',
@@ -73,17 +73,17 @@ describe('addNewUser', () => {
         try {
             await userService.addNewUser(user)
         } catch(e) {
-            expect(e.message).toEqual("ER_DUP_ENTRY");
+            expect(e.message).toEqual('ER_DUP_ENTRY');
         }
     })
 })
 
 describe('retrieveUserByEmailAddress', () => {
     it('should get user by email address', async() => {
-        // given 
-        let emailAddress = 'test-email-address@test.com';
+        // given
+        const emailAddress = 'test-email-address@test.com';
 
-        let userEntity: UserEntity = {
+        const userEntity: UserEntity = {
             FIRST_NAME: 'charlie',
             LAST_NAME: 'smith',
             EMAIL_ADDRESS: 'charlieasmith96',
@@ -91,7 +91,7 @@ describe('retrieveUserByEmailAddress', () => {
             HASHED_PASSWORD: '1!p',
         }
 
-        let expectedResult : UserDto = {
+        const expectedResult : UserDto = {
             firstName: 'charlie',
             lastName: 'smith',
             emailAddress: 'charlieasmith96',
@@ -105,16 +105,16 @@ describe('retrieveUserByEmailAddress', () => {
         userRepositoryMock = new UserRepository();
         userService = new UserService(userRepositoryMock)
 
-        let result = await userService.retrieveUserByEmailAddress(emailAddress);
+        const result = await userService.retrieveUserByEmailAddress(emailAddress);
 
         // then
         expect(result).toEqual(expectedResult);
     }),
     it('should throw error if promise rejects and error code is ER_NO_USER_FOUND', async() => {
-        // given 
-        let emailAddress = 'test-email-address@test.com';
+        // given
+        const emailAddress = 'test-email-address@test.com';
 
-        let err = {
+        const err = {
             message: 'This is an error',
             original: {
                 code: 'ER_NO_USER_FOUND'
@@ -130,16 +130,16 @@ describe('retrieveUserByEmailAddress', () => {
         try {
             await userService.retrieveUserByEmailAddress(emailAddress)
         } catch(e) {
-            expect(e.message).toEqual("ER_NO_USER_FOUND");
+            expect(e.message).toEqual('ER_NO_USER_FOUND');
         }
     })
 })
 describe('retrieveUserById', () => {
     it('should get user by id', async() => {
         // given
-        let userId = 23;
+        const userId = 23;
 
-        let userEntity: UserEntity = {
+        const userEntity: UserEntity = {
             FIRST_NAME: 'charlie',
             LAST_NAME: 'smith',
             EMAIL_ADDRESS: 'charlieasmith96',
@@ -147,7 +147,7 @@ describe('retrieveUserById', () => {
             HASHED_PASSWORD: '1!p',
         }
 
-        let expectedResult : UserDto = {
+        const expectedResult : UserDto = {
             firstName: 'charlie',
             lastName: 'smith',
             emailAddress: 'charlieasmith96',
@@ -161,16 +161,16 @@ describe('retrieveUserById', () => {
         userService = new UserService(userRepositoryMock)
 
         // when
-        let result = await userService.retrieveUserById(userId);
+        const result = await userService.retrieveUserById(userId);
 
         // then
         expect(result).toEqual(expectedResult)
     }),
     it('should return user not found if promise rejected with error code ER_NO_USER_FOUND', async() => {
         // given
-        let userId = 23;
+        const userId = 23;
 
-        let err = {
+        const err = {
             message: 'This is an error',
             original: {
                 code: 'ER_NO_USER_FOUND'
@@ -186,7 +186,7 @@ describe('retrieveUserById', () => {
         try {
             await userService.retrieveUserById(userId)
         } catch(e) {
-            expect(e.message).toEqual("ER_NO_USER_FOUND");
+            expect(e.message).toEqual('ER_NO_USER_FOUND');
         }
     })
 })
