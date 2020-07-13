@@ -192,37 +192,37 @@ describe('retrieveUserById', () => {
 })
 
 const mockInsertOne = (returnValue : UserEntity) => {
-    (UserRepository as jest.Mock).mockImplementation(function() {
+    (UserRepository as jest.Mock).mockImplementation(() => {
         return {insertOne: jest.fn().mockResolvedValue(returnValue)}
     })
 }
 
 const mockInsertOneRejected = (returnValue : any) => {
-    (UserRepository as jest.Mock).mockImplementation(function() {
+    (UserRepository as jest.Mock).mockImplementation(() => {
         return {insertOne: jest.fn().mockRejectedValue(returnValue)}
     })
 }
 
 const mockRetrieveByEmailAddress = (returnValue: UserEntity) => {
-    (UserRepository as jest.Mock).mockImplementation(function() {
+    (UserRepository as jest.Mock).mockImplementation(() => {
         return {retrieveByEmailAddress: jest.fn().mockResolvedValue(returnValue)}
     })
 }
 
 const mockRetrieveByEmailAddressRejected = (returnValue: any) => {
-    (UserRepository as jest.Mock).mockImplementation(function() {
+    (UserRepository as jest.Mock).mockImplementation(() => {
         return {retrieveByEmailAddress: jest.fn().mockRejectedValue(returnValue)}
     })
 }
 
 const mockRetrieveById = (returnValue: UserEntity) => {
-    (UserRepository as jest.Mock).mockImplementation(function() {
+    (UserRepository as jest.Mock).mockImplementation(() => {
         return {retrieveById: jest.fn().mockResolvedValue(returnValue)}
     })
 }
 
 const mockRetrieveByIdRejected = (returnValue: any) => {
-    (UserRepository as jest.Mock).mockImplementation(function() {
+    (UserRepository as jest.Mock).mockImplementation(() => {
         return {retrieveById: jest.fn().mockRejectedValue(returnValue)}
     })
 }
