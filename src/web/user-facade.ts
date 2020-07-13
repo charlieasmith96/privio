@@ -34,7 +34,7 @@ export class UserFacade {
         .checkPasswordWithHash(userAuthentication.password, hashedPassword);
 
         if (isPasswordCorrect) {
-            this.authenticationService.generateAccessToken(userAuthentication)
+            this.authenticationService.authenticateUser(userAuthentication)
         } else {
 
         }

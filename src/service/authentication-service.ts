@@ -2,6 +2,7 @@ import { Service, Inject } from 'typedi';
 import { AUTHENTICATION_SERVICE, USER_REPOSITORY } from '../config/services';
 import bcrypt from 'bcrypt';
 import { AuthenticationRepository } from '../persistence/authentication-repository';
+import { UserAuthentication, Token } from '../domain/user-authentication';
 
 @Service(AUTHENTICATION_SERVICE)
 export class AuthenticationService {
@@ -10,7 +11,7 @@ export class AuthenticationService {
 
     private SALT_ROUNDS = 12
 
-    public async checkPasswordWithHash(plaintextPassword: string, hashedPassword: string) : Promise<boolean>  {
+    async checkPasswordWithHash(plaintextPassword: string, hashedPassword: string) : Promise<boolean>  {
         return await bcrypt.compare(plaintextPassword, hashedPassword);
     }
 
@@ -18,25 +19,31 @@ export class AuthenticationService {
         return await bcrypt.hash(plaintextPassword, this.SALT_ROUNDS);
     }
 
-    authenticateUser(user : any) {
-        const accessToken = this.generateAccessToken(user);
-        const refreshToken = this.generateAndSaveRefreshToken(user)
-
-
+    authenticateUser(userAuthentication : UserAuthentication) {
+        const accessToken = this.generateAccessToken(userAuthentication);
+        const refreshToken = this.generateAndSaveRefreshToken(userAuthentication)
         // return token to FE
         // save refresh token in the database
     }
 
-    generateAccessToken(user : any) {
+    generateAccessToken(userAuthentication : UserAuthentication) : Token {
         // @ts-ignore
         return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15s'})
     }
 
-    generateAndSaveRefreshToken(user : any) {
+    async generateAndSaveRefreshToken(user : UserAuthentication) : Promise<Token> {
         // @ts-ignore
         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
+        return (await this.authenticationRepository.insertOne(refreshToken)).TOKEN;
+    }
 
+    async refreshToken(token: Token) : Promise<Token> {
+        // if refresh token exists in db, return new access toke
+        const refreshToken = await this.authenticationRepository.retrieveByToken(token);
 
+        if (refreshToken) {
+            return this.generateAccessToken();
+        }
     }
 
 }

@@ -5,6 +5,7 @@ import { USER_FACADE } from '../config/services';
 import { userSchema } from './schemas/user-schema';
 import { UserDto } from '../domain/user-dto';
 import { UserFacade } from './user-facade';
+import { UserAuthentication } from '../domain/user-authentication';
 
 @JsonController('/user')
 export class UserController {
@@ -35,7 +36,12 @@ export class UserController {
     }
 
     @Post('/login')
-    async login(@Body() authenticationBody: any) {
+    async login(@Body() authenticationBody: UserAuthentication) {
+
+        try {
+            return await this.userFacade.authenticateUser(authenticationBody);
+        }
+        
         // hash password and check against salted password in DB
         // generate tokens in authentication service
         // return tokens to user
