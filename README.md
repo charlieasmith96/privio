@@ -1,4 +1,4 @@
-# TypeScript Sample Web Service
+# Privio
 
 ## What's this about?
 
