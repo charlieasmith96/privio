@@ -10,7 +10,7 @@ export class AuthenticationService {
 
     private SALT_ROUNDS = 12
 
-    async checkPasswordWithHash(plaintextPassword: string, hashedPassword: string) : Promise<boolean>  {
+    public async checkPasswordWithHash(plaintextPassword: string, hashedPassword: string) : Promise<boolean>  {
         return await bcrypt.compare(plaintextPassword, hashedPassword);
     }
 
@@ -35,8 +35,7 @@ export class AuthenticationService {
     generateAndSaveRefreshToken(user : any) {
         // @ts-ignore
         const refreshToken = jwt.sign(user, process.env.REFRESH_TOKEN_SECRET);
-
-
+        
 
     }
     

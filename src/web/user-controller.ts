@@ -26,7 +26,7 @@ export class UserController {
     }
 
     @Get('/:userId')
-    async retrieveUserById(@Param('userId') userId: string) : Promise<UserDto>{
+    async retrieveUserById(@Param('userId') userId: number) : Promise<UserDto>{
         try {
             return await this.userFacade.retrieveUserById(userId);
         } catch(err) {

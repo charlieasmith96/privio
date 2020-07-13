@@ -30,27 +30,34 @@ export class UserService {
             const retrievedUser = await this.userRepository.retrieveByEmailAddress(emailAddress);
             return this.convertNewUserEntityToNewUserDto(retrievedUser);
         } catch(err) {
-            throw UserDoesNotExistException(err.original.code);
+            if (err.original && err.original.code === 'ER_NO_USER_FOUND') throw UserDoesNotExistException(err.original.code);
+            throw new Error(err.code)
         }
     }
 
-    async retrieveUserById(id: string) : Promise<UserDto> {
+    async retrieveUserById(id: number) : Promise<UserDto> {
         try {
             const retrievedUser = await this.userRepository.retrieveById(id);
             return this.convertNewUserEntityToNewUserDto(retrievedUser);
         } catch(err) {
-            throw UserAlreadyExistsException(err.original.code);
+            console.log(err)
+            if (err.original  && err.original.code === 'ER_NO_USER_FOUND') throw UserDoesNotExistException(err.original.code);
+            throw new Error(err.code)        
         }
     }
 
 
-    convertNewUserToNewUserEntity(newUser: NewUser) : UserEntity {
+    convertNewUserToNewUserEntity(newUser: NewUser | null) : UserEntity {
+        if (!newUser) throw Error('Invalid argument for converter')
+        
         const { firstName, lastName, emailAddress, phoneNumber, password} = newUser;
         return { FIRST_NAME: firstName, LAST_NAME: lastName, EMAIL_ADDRESS: emailAddress,
              PHONE_NUMBER: phoneNumber, HASHED_PASSWORD: password};
     }
 
-    convertNewUserEntityToNewUserDto(newUserEntity: UserEntity): UserDto {
+    convertNewUserEntityToNewUserDto(newUserEntity: UserEntity | null): UserDto {
+        if (!newUserEntity)  throw Error('Invalid argument for converter')
+
         const { FIRST_NAME, LAST_NAME, EMAIL_ADDRESS, PHONE_NUMBER, HASHED_PASSWORD } = newUserEntity; // destruct user object
         return { firstName: FIRST_NAME,
             lastName: LAST_NAME,

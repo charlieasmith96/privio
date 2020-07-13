@@ -8,7 +8,8 @@
     "startAuth": "nodemon -x ts-node src/authServer.ts",
     "serve": "nodemon -x ts-node src/main.ts",
     "build": "./node_modules/.bin/tsc",
-    "test": "env NODE_ENV=test mocha --timeout=3000 --exit --require ts-node/register ./integration-test/*.test.ts"
+    "test": "env NODE_ENV=test mocha --timeout=3000 --exit --require ts-node/register ./integration-test/*.test.ts",
+    "test-jest": "jest"
   },
   "author": "Charlie Smith <charlieasmith96@gmail.com>",
   "license": "ISC",
@@ -18,6 +19,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/express-session": "^1.17.0",
     "@types/hapi__joi": "^17.1.2",
+    "@types/jest": "^26.0.4",
     "@types/joi": "^14.3.4",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/lodash": "^4.14.155",
@@ -43,6 +45,7 @@
     "routing-controllers": "^0.8.0",
     "sequelize": "^4.31.2",
     "superagent": "^5.2.2",
+    "ts-jest": "^26.1.1",
     "typedi": "^0.8.0"
   },
   "devDependencies": {
@@ -55,6 +58,7 @@
     "@types/sinon": "^9.0.4",
     "@types/supertest": "^2.0.9",
     "chai": "^4.2.0",
+    "jest": "^26.1.0",
     "mocha": "^8.0.1",
     "nodemon": "^2.0.4",
     "sinon": "^9.0.2",

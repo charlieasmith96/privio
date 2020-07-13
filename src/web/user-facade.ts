@@ -18,7 +18,7 @@ export class UserFacade {
         return this.userService.addNewUser(newUser);
     }
 
-    async retrieveUserById(id: string) : Promise<UserDto> {
+    async retrieveUserById(id: number) : Promise<UserDto> {
         return this.userService.retrieveUserById(id);
     }
 
