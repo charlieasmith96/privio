@@ -2,4 +2,4 @@
 
 ## What's this about?
 
-New GDPR privary based project
+New GDPR privacy based project
