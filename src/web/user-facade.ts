@@ -3,8 +3,9 @@ import { USER_FACADE, USER_SERVICE, AUTHENTICATION_SERVICE } from '../config/ser
 import { NewUser } from '../domain/new-user';
 import { UserDto } from '../domain/user-dto';
 import { UserService } from '../service/user-service';
-import { AuthenticationService } from '../service/authentication-service';
+import { AuthenticationService, Tokens } from '../service/authentication-service';
 import { UserAuthentication } from '../domain/user-authentication';
+import { UnauthorizedError } from 'routing-controllers';
 
 @Service(USER_FACADE)
 export class UserFacade {
@@ -26,17 +27,21 @@ export class UserFacade {
         return this.userService.retrieveUserByEmailAddress(emailAddress);
     }
 
-    async authenticateUser(userAuthentication: UserAuthentication) {
+    async authenticateUser(userAuthentication: UserAuthentication) : Promise<Tokens> {
         const { hashedPassword } = await this.userService
         .retrieveUserByEmailAddress(userAuthentication.emailAddress);
+
+        console.log('Hashed password: ' + hashedPassword)
 
         const isPasswordCorrect = this.authenticationService
         .checkPasswordWithHash(userAuthentication.password, hashedPassword);
 
-        if (isPasswordCorrect) {
-            this.authenticationService.authenticateUser(userAuthentication)
-        } else {
+        console.log('Is password correct? ' + isPasswordCorrect)
 
+        if (isPasswordCorrect) {
+            return this.authenticationService.generateAndSaveTokens(userAuthentication.emailAddress)
+        } else {
+            throw new UnauthorizedError
         }
     }
 }

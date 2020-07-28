@@ -24,7 +24,7 @@ export const TokenFactory = (sequelize: Sequelize.Sequelize, DataTypes: Sequeliz
             type: DataTypes.STRING
         }
     };
-    const Token = sequelize.define<TokenInstance, TokenAttributes>('Token', attributes, {updatedAt: 'UPDATE_DATE', createdAt: 'CREATE_DATE'});
+    const Token = sequelize.define<TokenInstance, TokenAttributes>('Token', attributes, {updatedAt: 'UPDATE_DATE', createdAt: 'CREATE_DATE', tableName: 'Tokens'});
 
     return Token;
 }

@@ -22,6 +22,9 @@ export class DbFactory {
         };
 
         DbFactory.db = db;
+        console.log('Created the following models: ')
+        console.log(sequelize.models)
+        console.log(db)
     }
 
     public static getDb() {

@@ -22,6 +22,7 @@ export class UserService {
             return this.convertNewUserEntityToNewUserDto(createdUser)
         } catch(err) {
             if (err.original.code === ErrorCodes.ER_DUP_ENTRY) throw UserAlreadyExistsException(err.original.code);
+            console.log('Caught error ' + err)
             throw new Error(err.code)
         }
     }
@@ -29,9 +30,13 @@ export class UserService {
     async retrieveUserByEmailAddress(emailAddress: string) : Promise<UserDto> {
         try {
             const retrievedUser = await this.userRepository.retrieveByEmailAddress(emailAddress);
-            return this.convertNewUserEntityToNewUserDto(retrievedUser);
+
+            if (!retrievedUser) {
+                throw UserAlreadyExistsException('User does not exist')
+            }
+
+            return this.convertNewUserEntityToNewUserDto(retrievedUser)
         } catch(err) {
-            if (err.original && err.original.code === ErrorCodes.ER_NO_USER_FOUND) throw UserDoesNotExistException(err.original.code);
             throw new Error(err.code)
         }
     }

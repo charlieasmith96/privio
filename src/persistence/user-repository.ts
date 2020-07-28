@@ -15,7 +15,6 @@ export class UserRepository {
     }
 
     async retrieveByEmailAddress(emailAddress: string) : Promise<UserEntity | null> {
-        return DbFactory.getDb().User
-        .findOne({ where: {EMAIL_ADDRESS: emailAddress} });
+        return DbFactory.getDb().User.findOne({ where: {EMAIL_ADDRESS: emailAddress} });
     }
 }

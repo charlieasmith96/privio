@@ -8,10 +8,16 @@ import { Token } from '../domain/user-authentication';
 export class AuthenticationRepository {
 
     async insertOne(tokenEntity: TokenEntity) : Promise<TokenEntity> {
-        return DbFactory.getDb().Token.create(tokenEntity);
+        console.log('im inserting something')
+        console.log(DbFactory.getDb())
+        return await DbFactory.getDb().Token.create(tokenEntity);
     }
 
     async retrieveByToken(token: Token) : Promise<TokenEntity | null> {
         return DbFactory.getDb().Token.findOne({ where: {token} });
+    }
+
+    async deleteTokenByEmailAddress(emailAddress: string) {
+        return DbFactory.getDb().Token.destroy({where: {emailAddress}})
     }
 }
